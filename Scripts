@@ -1,0 +1,94 @@
+var data = [
+    addStudentData("Isaac Netwon", "isanew1", "secret", "1", "en"),
+    addStudentData("Thales", "thales1", "secret", "1", "en"),
+    addStudentData("Pythagoras", "pythag1", "secret", "1", "es"),
+    addStudentData("Albert Einstein", "albein1", "secret", "1", "es"),
+    addStudentData("Euclid", "euclid1", "secret", "1", "es"),
+    addStudentData("Blaise Pascal", "blapas1", "secret", "1", "es"),
+    addStudentData("Alan Turing", "alatur1", "secret", "1", "es"),
+    addStudentData("Ada Lovelace", "adalov1", "secret", "1", "en"),
+    addStudentData("Blaise Pascal", "blapas1", "secret", "1", "es"),
+    addStudentData("Benjamin Banneker", "benban1", "secret", "1", "en"),
+    addStudentData("John von Neumann", "johneu1", "secret", "1", "es")
+];
+
+
+function addStudentData(name, user, pass, gen, lan) {
+    return {"name": name, "username": user, "password": pass, "gender": gen, "language": lan};
+}
+
+
+function drawtable() {
+    var TableData = "<table class=\"table table-bordered table-striped	\"> <tr><th>Student Name </th> <th> User Name </th> <th> Password </th> <th>Gender </th> <th> Language </th> </tr>";
+    for (var i = 0; i < data.length; i++) {
+        TableData += '<tr>';
+        TableData += '<td><span class="readclass" style="cursor: pointer" id="name_' + i + '">' + data[i]['name'] + '</span> <input type="text" class="editclass" id="name_' + i + '_input"></td >' +
+            '<td><span class="readclass" style="cursor: pointer" id="username_' + i + '">' + data[i]['username'] + '</span> <input type="text" class="editclass" id="username_' + i + '_input"> </td>' +
+            '<td><span class="readclass" style="cursor: pointer" id="password_' + i + '">' + data[i]['password'] + '</span> <input type="text" class="editclass" id="password_' + i + '_input"></td >' +
+            '<td><span class="readclass" style="cursor: pointer" id="gender_' + i + '">' + data[i]['gender'] + '</span> ' +
+            '<select id="gender_' + i + '_input"' + 'class="editclass" data-role="slider">' +
+            '<option value="1" selected="true">Male</option>' +
+            '<option value="0">Female</option>' +
+            '</select></td >' +
+            '<td><span class="readclass" style="cursor: pointer" id="language_' + i + '">' + data[i]['language'] + '</span> ' +
+            '<select id="language_' + i + '_input"' + 'class="editclass" data-role="slider">' +
+            '<option value="en" selected="true">English</option>' +
+            '<option value="es">Spanish</option>' +
+            '</select></td >';
+        TableData += '</tr>';
+
+    }
+
+    TableData += "</table>";
+    return TableData;
+}
+
+
+$(function () {
+    document.getElementById("StudentTable").innerHTML = drawtable();
+    $.each($(".editclass"), function (itemindex, item) {
+        $(item).hide();
+    });
+
+    $(".readclass").bind("click", function () {
+        $(this).hide();
+        var id = this.id;
+        $("#" + id + "_input").show();
+    })
+
+    $(".editclass").focusout(function () {
+        var value = $(this).val();
+        $(this).hide();
+        var id = this.id;
+        var spanid = id.replace('_input', '');
+        $("#" + spanid).text(value);
+        $("#" + spanid).show();
+
+        var row = spanid.substr(spanid.indexOf('_') + 1, 3);
+        var field = spanid.substr(0, spanid.indexOf('_'));
+        data[row][field] = value;
+    });
+});
+
+
+/*
+ //-- Example Test
+ var Calculator = function() {};
+ Calculator.prototype = {
+ constructor: Calculator,
+ add: function(a, b) {
+ return a + b;
+ }
+ };
+
+ //Spec Code
+ describe('Calculator Test', function() {
+ it('Add 1+2=3', function() {
+ var calc = new Calculator();
+ expect(calc.add(1, 2)).toEqual(3);
+ });
+ });
+ */
+
+
+
